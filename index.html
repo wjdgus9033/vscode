@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #digitContainer {
+            display: flex;
+        }
+
+        table,
+        tr,
+        td {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid lightblue;
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="digitContainer">
+        <table>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        const dig = document.querySelector("#digitContainer");
+        const td1 = document.querySelectorAll("td");
+
+        const tdmap = new Map([
+            [1, [0, 1, 0, 1, 1, 1, 0, 1, 0]],
+            [2, [1, 1, 0, 1, 0, 0, 1, 0, 1]]
+        ]);
+        const narr = tdmap.get(1);
+
+        let bgColor = ""
+        narr.map((value, idx) => {
+            if (value) {
+                bgColor = "darkblue"
+                td1[idx].style.backgroundColor = bgColor;
+            }
+        });
+
+        for (const [idx, item] of td1.entries()) {
+            item.addEventListener("click", function () { this.style.backgroundColor = "red" });
+        }
+
+    </script>
+</body>
+
+</html>
