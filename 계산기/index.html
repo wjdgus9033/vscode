@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>계산기</title>
+</head>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    h1{
+        text-align: center;
+    }
+    #sf {
+        font-size: 3vw;
+        width: 180px;
+        height: 40px;
+        border: 3px solid #000;
+        text-align: center;
+        line-height: 37px;
+        padding : 0 5px;
+        margin: 0 auto;
+        border-radius: 15px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    button {
+        width: 40px;
+        height: 40px;
+        margin: 3px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .bu {
+        font-size: 20px;
+    }
+    .obu{
+        font-size: 20px;
+        font-weight: bold;
+        background-color:rgb(255, 174, 0);
+    }
+
+    #re {
+        font-weight: bold;
+        background-color:rgb(255, 174, 0);
+        font-size: 9px;
+        line-height: 35px;
+        align-items: center;
+        justify-content: center;  
+        display: flex; 
+    }
+
+    .pu {
+        grid-column: span 2;
+        width: 90%;
+        font-weight: bold;
+        background-color: rgb(255, 174, 0);
+        
+    }
+    #all{
+        text-align: center;
+    }
+    #full{
+        width: 210px;
+        height: 400px;
+        border: 3px solid #000;
+        border-radius: 15px;
+        justify-content: center;
+        background-color:rgb(167, 167, 167);
+    }
+    #keypad {
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        gap: 1px;
+        justify-items: center;
+    }
+</style>
+
+<body>
+    <div id = "full">
+    <div>
+        <h1>계 산 기</h1>
+    </div>
+    <div id ="all">
+    <div id="sf">0</div>
+    <br>
+    <div>
+        <div id="keypad">
+        <button class="bu" onclick="on(7)">7</button>
+        <button class="bu" onclick="on(8)">8</button>
+        <button class="bu" onclick="on(9)">9</button>
+        <button class="obu" onclick="ff('/')">/</button>
+
+        <button class="bu" onclick="on(4)">4</button>
+        <button class="bu" onclick="on(5)">5</button>
+        <button class="bu" onclick="on(6)">6</button>
+        <button class="obu" onclick="ff('*')">*</button>
+
+        <button class="bu" onclick="on(1)">1</button>
+        <button class="bu" onclick="on(2)">2</button>
+        <button class="bu" onclick="on(3)">3</button>
+        <button class="obu" onclick="ff('-')">-</button>
+
+        <button id="re" onclick="reset()">초기화</button>
+        <button class="bu" onclick="on(0)">0</button>
+        <button class="obu" onclick="percent()">%</button>
+        <button class="obu" onclick="ff('+')">+</button>
+
+        <button class="pu" onclick="push1()">=</button>
+        <button class="pu" onclick="off()">on / off</button>
+    </div>
+    </div>
+    </div>
+
+    <script>
+        const st = document.getElementById("sf");
+        let num = ""
+        let n2 = []
+        let onoff = true;
+
+        const on = (a) => {
+            if (!onoff) return;
+            num += a;
+            st.innerHTML = n2.join(" ") + " " + num;
+        }
+
+        const ff = (o) => {
+            if (!onoff) return;
+            if (num !== "") {
+                n2.push(Number(num));
+                num = "";
+            }
+            n2.push(o);
+            st.innerHTML = n2.join(" ");
+        }
+
+        const push1 = function () {
+            if (!onoff) return;
+            if (num != "") {
+                n2.push(Number(num));
+                num = "";
+            }
+            let fo = n2[0];
+            for (let i = 1; i < n2.length; i += 2) {
+                const ff2 = n2[i];
+                const next = n2[i + 1];
+                switch (ff2) {
+                    case "+": fo += next; break;
+                    case "-": fo -= next; break;
+                    case "*": fo *= next; break;
+                    case "/": fo = next == 0 ? "다시 입력" : fo / next; break;
+                }
+            }
+            st.innerHTML = n2.join(" ")+" = " +fo;
+
+        }
+        const percent = function(){
+            if (!onoff) return;
+            if(num !== ""){
+                num = (Number(num)*0.01).toString();
+                st.innerHTML = n2.join(" ") + " " + num;
+            }
+        }
+        const reset = function () {
+            if (!onoff) return;
+            num = "";
+            n2 = [];
+            st.innerHTML = 0;
+        }
+
+        const off = function(){
+            onoff = !onoff;
+            num = "";
+            n2 = [];
+            st.innerHTML = onoff ? 0 : " ";
+        }
+    </script>
+</body>
+
+</html>
