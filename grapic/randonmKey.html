@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도형 피하기</title>
+</head>
+<style>
+    body{
+        background-color: black;
+        text-align: center;
+    }
+    canvas {
+        border: 1px solid #414040;
+        background-color: #383737;
+        margin: auto;
+    }
+</style>
+
+<body onload="startGame()">
+    <script>
+        let boxs = [];
+        let mybox;
+        let game = true;
+
+        function startGame() {
+            mybox = new component(30, 30, "red", 100, 100, true);
+            setInterval(randombox, 7000);
+            area.start();
+            move()
+        }
+
+        var area = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 600;
+                this.canvas.height = 500;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 10);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y, isPlayer = false) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.xb = isPlayer ? 0 : 1;
+            this.yb = isPlayer ? 0 : 1;
+            this.isPlayer = isPlayer;
+            this.isHit = false;
+
+            this.update = function () {
+                const ctx = area.context;
+                if (this.isHit) {
+                    ctx.strokeStyle = this.color
+                    ctx.strokeRect(this.x, this.y, this.width, this.height);
+                } else {
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+            };
+
+            /* 충돌 감지 */
+            this.crashWith = function (other) {
+                return !(
+                    this.y + this.height < other.y ||
+                    this.y > other.y + other.height ||
+                    this.x + this.width < other.x ||
+                    this.x > other.x + other.width
+                );
+            };
+        }
+
+        /* 랜덤 상자 */
+        function randombox() {
+            const x = Math.random() * 450;
+            const y = Math.random() * 240;
+            const hint = new component(30, 30, 'yellow', x, y);
+            hint.isHit = true;
+            boxs.push(hint);
+
+            setTimeout(() => {
+                boxs = boxs.filter(b => !b.isHit || b !== hint);
+                const color = randomcolor();
+                const newbox = new component(30, 30, color, x, y);
+                boxs.push(newbox);
+            }, 3000);
+        }
+
+        /* 램덤 색깔 */
+        function randomcolor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        /* 키보드 입력 */
+        const keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        document.addEventListener("keydown", e => {
+            if (e.code in keys) keys[e.code] = true;
+        });
+
+        document.addEventListener("keyup", e => {
+            if (e.code in keys) keys[e.code] = false;
+        });
+
+        function move() {
+            if (!game) return;
+            const speed = 2;
+            if (keys.ArrowUp) mybox.y -= speed;
+            if (keys.ArrowDown) mybox.y += speed;
+            if (keys.ArrowLeft) mybox.x -= speed;
+            if (keys.ArrowRight) mybox.x += speed;
+
+            requestAnimationFrame(move);
+        }
+
+        /* 게임 시작시 */
+        function updateGameArea() {
+            if (!game) return;
+
+            area.clear();
+            for (let box of boxs) {
+                if (!box.isHit) {
+                    if (box.x + box.width >= area.canvas.width || box.x <= 0) box.xb *= -1;
+                    if (box.y + box.height >= area.canvas.height || box.y <= 0) box.yb *= -1;
+
+                    box.x += box.xb;
+                    box.y += box.yb;
+                }
+                if (mybox.crashWith(box)) {
+                    game = false;
+                    alert("충돌! 게임 종료");
+                    clearInterval(area.interval);
+                    return;
+                }
+            }
+
+            mybox.update();
+            boxs.forEach(box => box.update());
+        }
+    </script>
+</body>
+
+</html>

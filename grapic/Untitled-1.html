@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 박스와 랜덤 박스</title>
+  <style>
+    canvas {
+      border: 1px solid #d3d3d3;
+      background-color: #f1f1f1;
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body onload="startGame()">
+  <script>
+    let boxs = [];
+    let myBox;
+    let gameRunning = true;
+
+    function startGame() {
+      area.start();
+      myBox = new component(30, 30, "red", 100, 100, true);
+      setInterval(randombox, 5000); // 10초마다 새로운 박스 생성
+      move();
+    }
+
+    var area = {
+      canvas: document.createElement("canvas"),
+      start: function () {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.firstChild);
+        this.interval = setInterval(updateGameArea, 20);
+      },
+      clear: function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+    };
+
+    function component(width, height, color, x, y, isPlayer = false) {
+      this.width = width;
+      this.height = height;
+      this.x = x;
+      this.y = y;
+      this.xb = isPlayer ? 0 : 1;
+      this.yb = isPlayer ? 0 : 1;
+      this.isPlayer = isPlayer;
+
+      this.update = function () {
+        const ctx = area.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      };
+
+      this.crashWith = function (other) {
+        return !(
+          this.y + this.height < other.y ||
+          this.y > other.y + other.height ||
+          this.x + this.width < other.x ||
+          this.x > other.x + other.width
+        );
+      };
+    }
+
+    function randombox() {
+      const color = randomcolor();
+      const newBox = new component(30, 30, color, Math.random() * 450, Math.random() * 240);
+      boxs.push(newBox);
+    }
+
+    function randomcolor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    const keys = {
+      ArrowUp: false,
+      ArrowDown: false,
+      ArrowLeft: false,
+      ArrowRight: false
+    };
+
+    document.addEventListener("keydown", e => {
+      if (e.code in keys) keys[e.code] = true;
+    });
+
+    document.addEventListener("keyup", e => {
+      if (e.code in keys) keys[e.code] = false;
+    });
+
+    function move() {
+      if (!gameRunning) return;
+      const speed = 2;
+      if (keys.ArrowUp) myBox.y -= speed;
+      if (keys.ArrowDown) myBox.y += speed;
+      if (keys.ArrowLeft) myBox.x -= speed;
+      if (keys.ArrowRight) myBox.x += speed;
+
+      requestAnimationFrame(move);
+    }
+
+    function updateGameArea() {
+      if (!gameRunning) return;
+
+      area.clear();
+
+      // 랜덤 박스 이동 및 충돌 검사
+      for (let box of boxs) {
+        if (box.x + box.width >= area.canvas.width || box.x <= 0) box.xb *= -1;
+        if (box.y + box.height >= area.canvas.height || box.y <= 0) box.yb *= -1;
+
+        box.x += box.xb;
+        box.y += box.yb;
+
+        if (myBox.crashWith(box)) {
+          gameRunning = false;
+          alert("충돌! 게임 종료");
+          clearInterval(area.interval);
+          return;
+        }
+      }
+
+      myBox.update();
+      boxs.forEach(box => box.update());
+    }
+  </script>
+</body>
+
+</html>
