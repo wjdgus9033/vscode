@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="w" placeholder="수식 입력">
+    <button onclick="con()">후위 표기식 변환</button>
+    <p id="result"></p>
+
+    <script>
+        function con() {
+            const w1 = document.getElementById("w").value;
+            let output = [];
+            let st = [];
+            const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+
+            for (let i =0; i < w1.length; i++){
+                const token = w1[i];
+
+                if(!isNaN(token)){
+                    output.push(token);
+                }else if (token === "("){
+                    st.push(token)
+                }else if (token === ")"){
+                    while (st.length && st[st.length - 1] !== '('){
+                        output.push(st.pop());
+                    }
+                    st.pop();
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>
