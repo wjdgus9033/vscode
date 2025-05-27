@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .all {
+        display: flex;
+    }
+
+    .index {
+        display: none;
+        border: 1px solid black;
+        background-color: #bdbdbd;
+        height: 490px;
+        width: 250px;
+    }
+    .index.show{
+        display: block;
+    }
+
+    .in1 {
+        padding: 10px 10px;
+        font-size: 15px;
+    }
+
+    .in2 {
+        padding: 0 10px 0 10px;
+        font-size: 20px;
+        height: 61px;
+        display: flex;
+        align-items: center;
+        text-align: left;
+    }
+
+    .in3,
+    .in4 {
+        display: flex;
+        flex-direction: column;
+        margin: 5px;
+        gap: 10px;
+        font-size: 15px;
+    }
+    .in3 button,
+    .in4 button{
+        background-color: transparent;
+        text-align: left;
+        font-size: 15px;
+        font-weight: normal;
+    }
+    .in5 button{
+        background-color: transparent;
+        text-align: left;
+        font-size: 15px;
+        font-weight: normal;
+        margin: 10px 0px 10px 5px;
+    }
+    
+    .calculator {
+        border: 1px solid black;
+        text-align: center;
+        width: 360px;
+        height: 490px;
+        background-color: #ddd;
+        font-weight: bold;
+    }
+
+    .head {
+        display: flex;
+        padding: 10px 10px;
+        font-size: 15px;
+        gap: 10px;
+    }
+
+    .he2 {
+        display: flex;
+        flex-direction: row;
+        padding: 0 10px;
+        font-size: 20px;
+    }
+
+    .he3 {
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .he3 button {
+        width: 51px;
+        height: 40px;
+        background-color: transparent;
+    }
+
+    .result {
+        margin: 0px 10px 10px 0px;
+        text-align: right;
+        font-size: 30px;
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 80px);
+        grid-template-rows: repeat(6, 40px);
+        justify-content: center;
+        gap: 5px;
+    }
+
+    button {
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+    } 
+
+    .numbers {
+        background-color: white;
+        font-size: 20px;
+    }
+
+    .numbers:hover {
+        background-color: rgb(247, 235, 235);
+    }
+
+    .re {
+        background-color: rgb(51, 51, 255);
+        color: white;
+        font-size: 15px;
+    }
+
+    .re:hover {
+        background-color: rgb(68, 68, 250);
+    }
+    .ind{
+        background-color: transparent;
+        font-size: 20px;
+    }
+</style>
+
+<body>
+    <div class="all">
+        <div class="index">
+            <div class="in1">ㄱ 계산기</div>
+            <div class="in2">=</div>
+            <div class="in3">
+                <div>계산기</div>
+                <button>표준</button>
+                <button>공학용</button>
+                <button>그래프</button>
+                <button>프로그래머</button>
+                <button>날씨 계산</button>
+            </div>
+            <div class="in4">
+                <div>변환기</div>
+                <button>통화 환율</button>
+                <button>부피</button>
+                <button>길이</button>
+            </div>
+            <hr>
+            <div class="in5">
+                <button>설정</button>
+            </div>
+        </div>
+        <div class="calculator">
+            <div class="head">
+                <div style="margin-right: auto;">ㄱ 계산기</div>
+                <div>-</div>
+                <div>ㅁ</div>
+                <div>X</div>
+            </div>
+            <div class="he2">
+                <button class="ind" onclick="buindex()"> = </button>
+                <p style="margin-right: auto;">표준</p>
+                <p>@</p>
+            </div>
+            <div class="result">0</div>
+            <div class="he3">
+                <button>MC</button>
+                <button>MR</button>
+                <button>M+</button>
+                <button>M-</button>
+                <button>MS</button>
+                <button>M</button>
+            </div>
+            <div class="buttons">
+                <button>%</button>
+                <button>CE</button>
+                <button>C</button>
+                <button>지우기</button>
+
+                <button>1/X</button>
+                <button>X2</button>
+                <button>2루트X</button>
+                <button>/</button>
+
+                <button class="numbers">7</button>
+                <button class="numbers">8</button>
+                <button class="numbers">9</button>
+                <button>*</button>
+
+                <button class="numbers">4</button>
+                <button class="numbers">5</button>
+                <button class="numbers">6</button>
+                <button>-</button>
+
+                <button class="numbers">1</button>
+                <button class="numbers">2</button>
+                <button class="numbers">3</button>
+                <button>+</button>
+
+                <button class="numbers">+/-</button>
+                <button class="numbers">0</button>
+                <button class="numbers">.</button>
+                <button class="re">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function buindex() {
+            document.querySelector(".index").classList.toggle("show");
+        }
+    </script>
+</body>
+
+</html>

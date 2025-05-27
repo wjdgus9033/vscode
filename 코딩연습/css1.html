@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        padding: 10px;
+        background: #f1f1f1
+    }
+
+    .header {
+        background-color: white;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 60px;
+    }
+
+    .link {
+        background-color: black;
+        margin-top: 10px;
+    }
+
+    .link a {
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        float: left;
+        padding: 10px;
+    }
+    .link a:hover{
+        background-color: white;
+        color: black;
+    }
+    .link::after,
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .leftcolumn {
+        float: left;
+        width: 75%;
+    }
+
+    .rightcolumn {
+        float: left;
+        width: 25%;
+        padding-left: 20px;
+    }
+
+    .card {
+        background-color: white;
+        padding: 10px;
+        margin-top: 20px;
+    }
+    .fakeimg{
+        background-color: #ddd;
+        width: 100%;
+        padding: 10px;
+    }
+    .footer {
+        padding: 20px;
+        text-align: center;
+        background-color: #ddd;
+        margin-top: 20px;
+    }
+
+</style>
+
+<body>
+    <div class="header">
+        <h1>내 웹사이트</h1>
+        <p>효과를 보려면 브라우저 창 크기를 조절하세요.</p>
+    </div>
+    <div class="link">
+        <a href="#">link1</a>
+        <a href="#">link2</a>
+        <a href="#">link3</a>
+        <a href="#" style="float: right;">link4</a>
+    </div>
+    <div class="clearfix">
+        <div class="leftcolumn">
+            <div class="card">
+                <h3>제목</h3>
+                <h4>제목 설명, 2025년 5월 22일</h4>
+                <div class="fakeimg" style="height:200px;">Image</div>
+                <p>Some text..</p>
+                <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco.</p>
+            </div>
+            <div class="card">
+                <h3>TITLE HEADING</h3>
+                <h4>제목 설명, 2025년 5월 22일</h4>
+                <div class="fakeimg" style="height:200px;">Image</div>
+                <p>Some text..</p>
+                <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                    exercitation ullamco.</p>
+            </div>
+        </div>
+        <div class="rightcolumn">
+            <div class="card">
+                <h2>About Me</h2>
+                <div class="fakeimg" style="height:100px;">Image</div>
+                <p>Some text about me in culpa qui officia deserunt mollit anim..</p>
+            </div>
+            <div class="card">
+                <h3>Popular Post</h3>
+                <div class="fakeimg">
+                    <p>Image</p>
+                </div>
+                <div class="fakeimg">
+                    <p>Image</p>
+                </div>
+                <div class="fakeimg">
+                    <p>Image</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Follow Me</h3>
+                <p>Some text..</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <h2>Footer</h2>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>버튼에 따른 숫자 증감</title>
+</head>
+<body>
+    <h1>버튼눌러줘</h1>
+    <div id="result">0</div>
+    <button onclick="adf('+')">+</button>
+    <button onclick="adf('-')">-</button>
+
+    <script>
+        const re = document.getElementById("result");
+        let count = 0;
+        function adf(o){
+            switch(o){
+                case "+" : count += 1; break;
+                case "-" : count -= 1; break;
+            }
+            re.innerHTML = count;
+        }
+    </script>
+</body>
+</html>

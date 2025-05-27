@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동물원 홈페이지</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    .head {
+        background-color: blue;
+        padding: 10px;
+        align-items: center;
+        padding: 15px 5px;
+    }
+
+    .left1 a {
+        color: white;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .head a,
+    .head .dropdownbutton {
+        color: white;
+        background: none;
+        border: none;
+        font-size: 20px;
+        text-decoration: none;
+        font-weight: bold;
+        float: right;
+        margin-right: 10px;
+    }
+
+    .dropright {
+        position: relative;
+        float: right;
+    }
+
+    .dropdowncontent {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        z-index: 1;
+        top: 100%;
+        right: 0;
+    }
+
+    .clearfix::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .dropdowncontent.show {
+        display: block;
+    }
+
+    .icon {
+        border: 1px solid #000;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .icongrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        justify-items: center;
+    }
+
+    .dropdowncontent a {
+        text-decoration: none;
+        color: black;
+        text-align: center;
+    }
+</style>
+
+<body>
+    <div class="head clearfix">
+        <a href="https://www.seoul.go.kr/main/index.jsp" style="float: left;">서울특별시</a>
+        <div class="dropright">
+            <button class="dropdownbutton" onclick="toDropdown()">분야별정보</button>
+            <div class="dropdowncontent">
+                <div>분야별 정보</div>
+                <hr>
+                <div class="icongrid">
+                    <div class="icon">주택</div>
+                    <div class="icon">경제</div>
+                    <div class="icon">교통</div>
+                    <div class="icon">환경</div>
+                    <div class="icon">복지</div>
+                    <div class="icon">안전</div>
+                    <div class="icon">문화</div>
+                    <div class="icon">행정</div>
+                </div>
+                <hr>
+                <a href="https://news.seoul.go.kr/">서비스 전체보기</a>
+            </div>
+        </div>
+        <a href="https://opengov.seoul.go.kr/">정보공개</a>
+        <a href="https://eungdapso.seoul.go.kr/main.do">응답소</a>
+        <a href="https://www.seoul.go.kr/realmnews/in/list.do">서울소식</a>
+    </div>
+    <div>
+        <div></div>
+        <h1>서울대공원</h1>
+        <div></div>
+    </div>
+    <div>
+        
+    </div>
+    <script>
+        function toDropdown() {
+            document.querySelector(".dropdowncontent").classList.toggle("show");
+        }
+    </script>
+</body>
+
+</html>

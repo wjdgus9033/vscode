@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #result {
+        width: 300px;
+        margin-bottom: 20px;
+    }
+
+    button {
+        width: 90px;
+    }
+
+    ul {
+        list-style: decimal;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <button onclick="randombu()">랜덤한 숫자</button>
+    <div id="result"></div>
+
+    <script>
+        const uL = document.createElement("ul");
+        document.getElementById("result").appendChild(uL);
+
+        function randombu() {
+            const newNum = Math.floor(Math.random() * 450);
+            const lI = document.createElement("li");
+            lI.textContent = newNum;
+
+            if (uL.children.length >= 10) {
+                uL.removeChild(uL.firstChild);
+            }
+
+            uL.appendChild(lI);
+        }
+    </script>
+</body>
+
+</html>

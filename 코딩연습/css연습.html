@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: white;
+    }
+
+    .he,
+    .end {
+        color: white;
+        background-color: grey;
+        padding: 10px;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .column {
+        float: left;
+        padding: 10px;
+    }
+
+    .menu {
+        width: 25%;
+    }
+
+    .content {
+        width: 75%;
+    }
+
+    .menu ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .menu li {
+        padding: 20px;
+        margin-bottom: 10px;
+        background-color: blue;
+        color: #ffffff;
+    }
+    .menu li:hover{
+        background-color: rgb(115, 115, 238);
+    }
+    .h2{
+        background-color: blue;
+        color: white;
+        padding: 15px;
+        margin: 1px;
+    }
+</style>
+
+<body>
+    <div class="he">
+        <h1>Chania</h1>
+    </div>
+    <div class="clearfix">
+        <div class="column menu">
+            <ul>
+                <li>The Flight</li>
+                <li>The City</li>
+                <li>The Island</li>
+                <li>The Foodt</li>
+            </ul>
+        </div>
+        <div class="column content">
+            <h1 class ="h2">The City</h1>
+            <p>Chania is the capital of the Chania region on the island of Crete. The city can be divided in two parts,
+                the old town and the modern city.
+                <br><br> You will learn more about web layout and responsive web pages in a later chapter.
+            </p>
+        </div>
+    </div>
+    <div class="end">
+        <p>Footer Text</p>
+    </div>
+</body>
+
+</html>
