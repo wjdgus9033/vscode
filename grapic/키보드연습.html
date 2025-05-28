@@ -1,0 +1,46 @@
+<style>
+  #box {
+    width: 50px;
+    height: 50px;
+    background: red;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    transition: transform 0.1s linear;
+  }
+</style>
+<div id="box"></div>
+<script>
+  const box = document.getElementById('box');
+  let x = 100;
+  let y = 100;
+  const speed = 5;
+
+  // 키 상태 추적
+  const keys = {
+    ArrowUp: false,
+    ArrowDown: false,
+    ArrowLeft: false,
+    ArrowRight: false,
+  };
+
+  document.addEventListener('keydown', e => {
+    if (e.code in keys) keys[e.code] = true;
+  });
+
+  document.addEventListener('keyup', e => {
+    if (e.code in keys) keys[e.code] = false;
+  });
+
+  function move() {
+    if (keys.ArrowUp) y -= speed;
+    if (keys.ArrowDown) y += speed;
+    if (keys.ArrowLeft) x -= speed;
+    if (keys.ArrowRight) x += speed;
+
+    box.style.transform = `translate(${x}px, ${y}px)`;
+    requestAnimationFrame(move);
+  }
+
+  move(); // 애니메이션 루프 시작
+</script>

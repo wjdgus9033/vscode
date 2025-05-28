@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>랜덤 박스</title>
+</head>
+<style>
+    canvas {
+        border: 1px solid #d3d3d3;
+        background-color: #f1f1f1;
+    }
+</style>
+
+<body onload="startGame()">
+    <br>
+    <button onclick="randombox()">새로운 상자 추가</button>
+
+    <script>
+        let boxs = [];
+
+        function startGame() {
+            area.start();
+        }
+
+        var area = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 480;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 10);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            this.xb = 1;
+            this.yb = 1;
+            this.update = function () {
+                ctx = area.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+        }
+        function randombox() {
+            const color = randomcolor();
+            const newBox = new component(30, 30, color, Math.random() * 450, Math.random() * 240);
+            boxs.push(newBox);
+        }
+
+        function randomcolor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function updateGameArea() {
+            area.clear();
+            boxs.forEach(box => {
+                if (box.x + box.width >= area.canvas.width || box.x <= 0) {
+                    box.xb *= -1;
+                }
+                if (box.y + box.height >= area.canvas.height || box.y <= 0) {
+                    box.yb *= -1
+                }
+                box.x += box.xb;
+                box.y += box.yb;
+                box.update();
+            });
+        }
+    </script>
+</body>
+
+</html>

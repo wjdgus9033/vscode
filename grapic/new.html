@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도형피하기</title>
+</head>
+<style>
+    body {
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh; /* vh 화면의 100%를 의미 창 높이가 900px이면 100vh=900px*/
+        margin: 0;
+    }
+
+    canvas {
+        border: 5px solid #414040;
+        background-color: #383737;
+    }
+</style>
+
+<body onload="startGame()">
+    <div id="gameover-screen" style="display:none; 
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    color: white; 
+    text-align: center; 
+    font-family: 
+    sans-serif;">
+        <h1>GAME OVER</h1>
+        <button onclick="resetAll()" style="padding: 10px 20px; font-size: 18px;">다시 시작</button>
+    </div>
+    <div id="clock" style="color:black; margin-top: 10px;"></div>
+
+    <script>
+        let boxs = [];
+        let myimage;
+        let game = true;
+        let boxIntervalId;
+        let clockIntervalId;
+        let hintTimeouts = [];
+        let startTime;
+
+        function startGame() {
+            const image = new Image();
+            image.src = "honeybee.png";
+            image.onload = () => {
+                myimage = new component(100, 100, Math.random() * 450, Math.random() * 240, true, image);
+
+                randombox();
+                boxIntervalId = setInterval(randombox, 5000);
+                area.start();
+                move();
+                startTime = new Date();
+                clockIntervalId = setInterval(updateClock, 1000);
+            };
+        }
+
+        const area = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 600;
+                this.canvas.height = 500;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 10);
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        };
+
+        function component(width, height, x, y, player = false, img = null, color) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;
+            const speed = Math.random() * 2 + 1;
+            this.xb = player ? 0 : (Math.random() < 0.5 ? -speed : speed);
+            this.yb = player ? 0 : (Math.random() < 0.5 ? -speed : speed);
+            this.player = player;
+            this.hit = false;
+            this.img = img;
+            this.color = color;
+            this.update = function () {
+                const act = area.context;
+                if (this.img) {
+                    act.drawImage(this.img, this.x, this.y, this.width, this.height);
+                } else if (this.hit) {
+                    act.strokeStyle = this.color;
+                    act.strokeRect(this.x, this.y, this.width, this.height);
+                    act.lineWidth = 3;
+                } else {
+                    act.fillStyle = this.color;
+                    act.fillRect(this.x, this.y, this.width, this.height);
+                }
+            };
+            this.crashWith = function (other) {
+                return !(
+                    this.y + this.height < other.y ||
+                    this.y > other.y + other.height ||
+                    this.x + this.width < other.x ||
+                    this.x > other.x + other.width
+                );
+            };
+        }
+
+        function randombox() {
+            const x = Math.random() * 450;
+            const y = Math.random() * 240;
+            const hint = new component(30, 30, x, y, false, null, 'yellow');
+            hint.hit = true;
+            boxs.push(hint);
+
+            const timeoutId = setTimeout(() => {
+                boxs = boxs.filter(b => !b.hit || b !== hint);
+                const color = randomcolor();
+                const newbox = new component(30, 30, x, y, false, null, color);
+                boxs.push(newbox);
+            }, 3000);
+
+            hintTimeouts.push(timeoutId);
+        }
+
+        function randomcolor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        const keys = {
+            ArrowUp: false,
+            ArrowDown: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        document.addEventListener("keydown", e => {
+            if (e.code in keys) keys[e.code] = true;
+        });
+
+        document.addEventListener("keyup", e => {
+            if (e.code in keys) keys[e.code] = false;
+        });
+
+        function move() {
+            if (!game) return;
+            const speed = 4;
+            if (keys.ArrowUp) myimage.y -= speed;
+            if (keys.ArrowDown) myimage.y += speed;
+            if (keys.ArrowLeft) myimage.x -= speed;
+            if (keys.ArrowRight) myimage.x += speed;
+
+            requestAnimationFrame(move);
+        }
+
+        function updateGameArea() {
+            if (!game) return;
+            area.clear();
+            for (let box of boxs) {
+                if (!box.hit) {
+                    if (box.x + box.width >= area.canvas.width || box.x <= 0) box.xb *= -1;
+                    if (box.y + box.height >= area.canvas.height || box.y <= 0) box.yb *= -1;
+
+                    box.x += box.xb;
+                    box.y += box.yb;
+                }
+                /* 충돌시 */
+                if (myimage.crashWith(box)) {
+                    game = false;
+                    clearInterval(area.interval);
+
+                    document.getElementById("gameover-screen").style.display = "block"; // 🎯 Game Over UI 표시
+
+                    return;
+                }
+            }
+            myimage.update();
+            boxs.forEach(box => box.update());
+        }
+
+        function resetAll() {
+            clearInterval(area.interval);
+            clearInterval(boxIntervalId);
+            clearInterval(clockIntervalId);
+            hintTimeouts.forEach(id => clearTimeout(id));
+            boxs = [];
+            game = true;
+            hintTimeouts = [];
+            for (let key in keys) {
+                keys[key] = false;
+            }
+            area.clear();
+            document.getElementById("gameover-screen").style.display = "none"; // 🎯 다시 숨기기
+            startGame();
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const elapsed = new Date(now - startTime);
+            const hours = String(elapsed.getUTCHours()).padStart(2, '0');
+            const minutes = String(elapsed.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(elapsed.getUTCSeconds()).padStart(2, '0');
+            document.getElementById("clock").textContent = `⏱️ ${hours}:${minutes}:${seconds}`;
+        }
+    </script>
+</body>
+
+</html>
